@@ -1,0 +1,12 @@
+# 虚拟环境，不上传
+.venv/
+venv/
+# 报告日志，每次运行自动生成，不上传
+report/
+# pycharm本地配置，每个人不一样，不上传
+.idea/
+# python缓存文件
+__pycache__/
+*.pyc
+# 密钥、本地环境变量
+.env

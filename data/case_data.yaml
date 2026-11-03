@@ -1,0 +1,17 @@
+get_demo:
+  url: "/get"
+  method: "GET"
+  params:
+    name: "test"
+    age: 25
+  assert_key: "args.name"
+  assert_value: "test"
+
+post_json_demo:
+  url: "/post"
+  method: "POST"
+  json:
+    username: "auto_test"
+    password: "123456"
+  assert_key: "json.username"
+  assert_value: "auto_test"

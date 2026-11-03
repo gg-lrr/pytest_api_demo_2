@@ -24,12 +24,18 @@ jobs:
       - name: Clean old allure results
         run: rm -rf allure-results allure-report
 
-      - name: Run pytest, 输出allure结果
+      - name: Run pytest
         run: pytest --alluredir=allure-results
 
-      - name: Generate & Publish Allure to GitHub Pages
+      - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
         with:
           allure_results: allure-results
           allure_report: allure-report
-          gh_pages: true
+          keep_reports: 20
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report

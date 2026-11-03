@@ -21,23 +21,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Install Allure
-        uses: simple-elf/allure-report-action@master
-        with:
-          allure_version: 2.29.0
-
-      # ==========新增：先清理旧结果目录==========
       - name: Clean old allure results
         run: rm -rf allure-results
 
-      - name: Run pytest, 输出allure结果到allure-results文件夹
+      - name: Run pytest, 输出allure结果
         run: pytest --alluredir=allure-results
 
-      - name: Generate allure报告
-        run: allure generate allure-results -o allure-report --clean
-
-      - name: Upload Allure报告产物
-        uses: actions/upload-artifact@v4
+      # 一体化Action：自动识别allure-results，生成报告 + 上传artifact
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@master
         with:
-          name: allure-report
-          path: allure-report
+          allure_results: allure-results
+          allure_report: allure-report
+          allure_version: 2.29.0

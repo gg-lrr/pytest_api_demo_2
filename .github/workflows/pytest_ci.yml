@@ -26,6 +26,10 @@ jobs:
         with:
           allure_version: 2.29.0
 
+      # ==========新增：先清理旧结果目录==========
+      - name: Clean old allure results
+        run: rm -rf allure-results
+
       - name: Run pytest, 输出allure结果到allure-results文件夹
         run: pytest --alluredir=allure-results
 

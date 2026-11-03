@@ -1,5 +1,5 @@
 name: Pytest进阶接口自动化流水线
-# 触发规则：往main分支推送代码、提交PR，自动执行流水线
+# 触发规则：往master分支推送代码、提交PR，自动执行流水线
 on:
   push:
     branches: [ master ]
@@ -14,12 +14,11 @@ jobs:
       - name: 拉取代码
         uses: actions/checkout@v4
 
-      # 步骤2：安装Python3.11，缓存pip包，加速下次运行
+      # 步骤2：安装Python3.14，缓存pip包，加速下次运行
       - name: 配置Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.14
-          "
+          python-version: "3.14"
           cache: pip
 
       # 步骤3：升级pip，安装项目依赖
@@ -31,13 +30,14 @@ jobs:
       # 步骤4：执行pytest，生成独立HTML报告
       - name: 执行自动化用例
         run: |
+          export PYTHONPATH=$PWD
+          mkdir -p report
           pytest cases/ --html=report/report.html --self-contained-html
 
-      # 步骤5：上传报告
-      # if: always() 重点！无论用例成功/失败，都上传报告
+      # 步骤5：上传报告，无论用例成功/失败都上传
       - name: 上传HTML报告
-        if: always()
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: test-report
           path: report/report.html

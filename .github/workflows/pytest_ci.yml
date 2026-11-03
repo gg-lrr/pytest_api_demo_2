@@ -21,24 +21,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # ubuntu直接apt安装allure，稳定可靠
-      - name: Install Allure commandline
-        run: |
-          sudo apt update
-          sudo apt install -y allure
-
       - name: Clean old allure results
         run: rm -rf allure-results allure-report
 
       - name: Run pytest, 输出allure结果
         run: pytest --alluredir=allure-results
 
-      - name: Generate allure report
-        run: allure generate allure-results -o allure-report --clean
-
-      # 手动上传报告包，这一步是兜底，一定能在Artifacts找到
-      - name: Upload Allure Report Artifact
-        uses: actions/upload-artifact@v4
+      - name: Generate & Publish Allure to GitHub Pages
+        uses: simple-elf/allure-report-action@master
         with:
-          name: allure-report
-          path: allure-report
+          allure_results: allure-results
+          allure_report: allure-report
+          gh_pages: true
